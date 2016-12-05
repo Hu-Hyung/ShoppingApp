@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react-native');
-
 /*
 var FAKE_BOOK_DATA = [
     { volumeInfo:
@@ -14,9 +13,12 @@ var FAKE_BOOK_DATA = [
     }
 ];
 */
+
 var REQUEST_URL = 'https://www.googleapis.com/books/v1/volumes?q=subject:fiction';
+//var REQUEST_URL =require('./a.json');
+var BookDetail = require('./BookDetail');
+var REQUEST_URL2 = 'https://www.googleapis.com/books/v1/volumes?q=subject:nonfiction';
 var REQUEST_URL3 = 'https://github.com/3GTeam03/Test/blob/master/volumes.json';
-//var REQUEST_URL3 = './volumes.json';
 //var customData = require('/volumes.json');
 
 var {
@@ -32,7 +34,7 @@ var {
 
 
 
-class ProductList extends Component {
+class BookList extends Component {
 
   constructor(props) {
     super(props);
@@ -48,11 +50,20 @@ class ProductList extends Component {
     this.fetchData();
   }
 
-/*
   fetchData() {
-    fetch(REQUEST_URL)
+    fetch(REQUEST_URL,
+      {
+            method: 'get',
+            dataType: 'json',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
+      }
+    )
     .then((response) => response.json())
     .then((responseData) => {
+      console.log(responseData);
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(responseData.items),
         isLoading: false
@@ -60,51 +71,28 @@ class ProductList extends Component {
     })
     .done();
   }
-*/
-fetchData() {
-  fetch(REQUEST_URL,
-    {
-          method: 'get',
-          dataType: 'json',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
-    }
-  )
-  .then((response) => response.json())
-  .then((responseData) => {
-    console.log(responseData);
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(responseData.items),
-      isLoading: false
-    });
-  })
-  .done();
-}
 
 
-  showProductDetail(book){
+  showBookDetail(book){
     this.props.navigator.push({
       name: 'book',
       book: book,
     });
   }
 
-  renderProduct(book) {
+  renderBook(book) {
     return (
-      <TouchableHighlight onPress={() => this.showProductDetail(book)} underlayColor= '#f5dcff'>
+      <TouchableHighlight onPress={() => this.showBookDetail(book)} underlayColor= '#f5dcff'>
         <View>
           <View style={styles.container}>
             <Image
               source={{uri: book.volumeInfo.imageLinks.thumbnail}}
               style={styles.thumbnail} />
-
-              <Text style={styles.title}>{book.saleInfo.amount}</Text>
-
+            <Text style={styles.title}>{book.saleInfo.amount}</Text>
             <View style = {styles.rightContainer} />
               <Text style={styles.title}>{book.volumeInfo.title}</Text>
               <Text style={styles.author}>{book.volumeInfo.author}</Text>
+
             </View>
             <View style={styles.separator} />
           </View>
@@ -121,7 +109,7 @@ fetchData() {
     return(
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={this.renderProduct.bind(this)}
+        renderRow={this.renderBook.bind(this)}
         style={styles.listView}
         />
     );
@@ -174,4 +162,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = ProductList;
+module.exports = BookList;

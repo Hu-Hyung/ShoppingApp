@@ -1,8 +1,8 @@
 'use strict';
 
 var React = require('react-native');
-var BookList = require('./ProductList');
-var BookDetail = require('./ProductDetail');
+var BookList = require('./components/BookList');
+var BookDetail = require('./components/BookDetail');
 
 var {
   StyleSheet,
@@ -11,8 +11,21 @@ var {
   AppRegistry,
   BackAndroid,
   Navigator,
+  AsyncStorage,
   ToolbarAndroid
 } = React;
+
+var styles = StyleSheet.create({
+  navContainer: {
+    flex: 1,
+  },
+  toolbar: {
+    backgroundColor: 'gray',
+    height:55,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});
 
 var _navigator;
 BackAndroid.addEventListener('hardwareBackPress', () => {
@@ -30,18 +43,23 @@ var RouteMapper = function(route, navigationOperations, onComponentRef) {
       <View style={styles.navContainer}>
         <ToolbarAndroid
           style={styles.toolbar}
-          title="Featured Books"/>
+          title="Featured Books"
+          navIcon={require('./buttons/check.png')}
+          onIconClicked={navigationOperations.pop}
+
+        />
+        
         <BookList
           navigator={navigationOperations}
-          />
+        />
       </View>
-    );
+    );    
   } else if (route.name === 'book') {
     return (
       <View style={{flex: 1}}>
         <ToolbarAndroid
           actions={[]}
-          navIcon={require('../images/chevron-left.png')}
+          navIcon={require('./buttons/back_arrow.png')}
           onIconClicked={navigationOperations.pop}
           style={styles.toolbar}
           titleColor="white"
@@ -54,11 +72,14 @@ var RouteMapper = function(route, navigationOperations, onComponentRef) {
       </View>
     );
   }
+  
 };
 
 class Featured extends Component {
-  render() {
+  render() {  
     var initialRoute = {name: 'bookList' };
+    var a = 'Items: ';
+    AsyncStorage.setItem('', JSON.stringify(a));    
     return (
       <Navigator
         style={styles.navContainer}
@@ -69,17 +90,5 @@ class Featured extends Component {
     );
   }
 }
-
-var styles = StyleSheet.create({
-  navContainer: {
-    flex: 1,
-  },
-  toolbar: {
-    backgroundColor: 'skyblue',
-    height:55,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
 
 module.exports = Featured;

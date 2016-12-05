@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+var SearchResults = require('./SearchResults');
 
 var {
   StyleSheet,
@@ -12,7 +13,7 @@ var {
   ProgressBarAndroid
 } = React;
 
-class SearchProducts extends Component {
+class SearchBooks extends Component {
 
   constructor(props) {
     super(props);
@@ -33,7 +34,7 @@ class SearchProducts extends Component {
         <Text style={styles.instructions}>Search by book title and/or author</Text>
         <View>
           <Text style={styles.fieldLabel}>Book Title:</Text>
-          <TextInput style={styles.searchInput} onChange={this.productTitleInput.bind(this)}/>
+          <TextInput style={styles.searchInput} onChange={this.bookTitleInput.bind(this)}/>
         </View>
         <View>
           <Text style={styles.fieldLabel}>Author:</Text>
@@ -41,7 +42,7 @@ class SearchProducts extends Component {
         </View>
         <TouchableHighlight style={styles.button}
                            undelayColor='#f1c40f'
-                           onPress={this.searchProducts.bind(this)}>
+                           onPress={this.searchBooks.bind(this)}>
           <Text style={styles.buttonText}>Search</Text>
         </TouchableHighlight>
         {spinner}
@@ -51,7 +52,7 @@ class SearchProducts extends Component {
 
   }
 
-  productTitleInput(event) {
+  bookTitleInput(event) {
     this.setState({ bookTitle: event.nativeEvent.text});
   }
 
@@ -59,7 +60,7 @@ class SearchProducts extends Component {
     this.setState({ bookAuthor: event.nativeEvent.text});
   }
 
-  searchProducts() {
+  searchBooks() {
     this.fetchData();
   }
 
@@ -85,7 +86,7 @@ class SearchProducts extends Component {
               books: responseData.items
           });
         } else {
-          this.setState({ errorMessage: 'No mactched product found'});
+          this.setState({ errorMessage: 'No results found'});
         }
       })
       .catch(error =>
@@ -98,10 +99,8 @@ class SearchProducts extends Component {
 }
 
 var styles = StyleSheet.create({
-
   container: {
-    flex: 1,
-    backgroundColor: '#f5fcff'
+    flex: 1
   },
   searchInput: {
     height: 36,
@@ -112,10 +111,8 @@ var styles = StyleSheet.create({
     padding: 5
   },
   button: {
-    alignSelf: 'center',
     height: 36,
-    width: 100,
-    backgroundColor: 'skyblue',
+    backgroundColor: '#f39c12',
     borderRadius: 8,
     justifyContent: 'center',
     marginTop: 15
@@ -138,8 +135,8 @@ var styles = StyleSheet.create({
     fontSize: 15,
     alignSelf: 'center',
     marginTop: 15,
-    color: 'orange'
+    color: 'red'
   }
 });
 
-module.exports = SearchProducts
+module.exports = SearchBooks

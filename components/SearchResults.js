@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+var BookDetail = require('./BookDetail');
 var {
   StyleSheet,
   View,
@@ -10,62 +11,6 @@ var {
   Image,
   ListView
 } = React;
-
-
-
-class SearchResults extends Component {
-  constructor(props) {
-    super(props);
-
-    var dataSource = new ListView.DataSource(
-      {rowHasChanged: (row1, row2) => row1 !== row2});
-    this.state = {
-      dataSource: dataSource.cloneWithRows(this.props.books)
-    };
-
-  }
-
-  render() {
-    return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this.renderProduct.bind(this)}
-        style={styles.listView}
-        />
-    );
-
-  }
-
-  renderProduct(book) {
-    var imageURI = (typeof book.volumeInfo.imageLinks !== 'undefined') ? book.volumeInfo.imageLinks.thumbnail : '';
-
-    return (
-      <TouchableHighlight onPress={() => this.showProductDetail(book)}
-                          underlayColor='#dddddd'>
-      <View>
-          <View style={styles.cellContainer}>
-            <Image
-              source={{uri: imageURI}}
-              style={styles.thumbnail} />
-            <View style={styles.rightContainer}>
-              <Text style={styles.title}>{book.volumeInfo.title}</Text>
-              <Text style={styles.author}>{book.volumeInfo.authors}</Text>
-            </View>
-          </View>
-          <View style={styles.separator} />
-        </View>
-      </TouchableHighlight>
-    );
-  }
-
-  showProductDetail(book) {
-    this.props.navigator.push({
-      title:book.volumeInfo.title,
-      name: 'productDetail',
-      book: book
-    });
-  }
-}
 
 var styles = StyleSheet.create({
   container: {
@@ -105,5 +50,59 @@ var styles = StyleSheet.create({
     flex: 1
   }
 });
+
+class SearchResults extends Component {
+  constructor(props) {
+    super(props);
+
+    var dataSource = new ListView.DataSource(
+      {rowHasChanged: (row1, row2) => row1 !== row2});
+    this.state = {
+      dataSource: dataSource.cloneWithRows(this.props.books)
+    };
+
+  }
+
+  render() {
+    return (
+      <ListView
+        dataSource={this.state.dataSource}
+        renderRow={this.renderBook.bind(this)}
+        style={styles.listView}
+        />
+    );
+
+  }
+
+  renderBook(book) {
+    var imageURI = (typeof book.volumeInfo.imageLinks !== 'undefined') ? book.volumeInfo.imageLinks.thumbnail : '';
+
+    return (
+      <TouchableHighlight onPress={() => this.showBookDetail(book)}
+                          underlayColor='#dddddd'>
+      <View>
+          <View style={styles.cellContainer}>
+            <Image
+              source={{uri: imageURI}}
+              style={styles.thumbnail} />
+            <View style={styles.rightContainer}>
+              <Text style={styles.title}>{book.volumeInfo.title}</Text>
+              <Text style={styles.author}>{book.volumeInfo.authors}</Text>
+            </View>
+          </View>
+          <View style={styles.separator} />
+        </View>
+      </TouchableHighlight>
+    );
+  }
+
+  showBookDetail(book) {
+    this.props.navigator.push({
+      title:book.volumeInfo.title,
+      name: 'bookDetail',
+      book: book
+    });
+  }
+}
 
 module.exports = SearchResults;

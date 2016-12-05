@@ -1,9 +1,9 @@
 'use strict';
 
 var React = require('react-native');
-var SearchProducts = require('./SearchProducts');
-var SearchResults = require('./SearchResults');
-var ProductDetail = require('./ProductDetail');
+var SearchBooks = require('./components/SearchBooks');
+var SearchResults = require('./components/SearchResults');
+var BookDetail = require('./components/BookDetail');
 
 var {
   StyleSheet,
@@ -34,8 +34,8 @@ var RouteMapper = function(route, navigationOperations, onComponentRef) {
       <View style= {{flex: 1}}>
         <ToolbarAndroid
           style={styles.toolbar}
-          title="Search Products"/>
-        <SearchProducts
+          title="Search Books"/>
+        <SearchBooks
           navigator={navigationOperations}
           testProps="TestProps"
         />
@@ -46,7 +46,7 @@ var RouteMapper = function(route, navigationOperations, onComponentRef) {
       <View style={{flex: 1}}>
         <ToolbarAndroid
           actions={[]}
-          navIcon={require('../images/chevron-left.png')}
+          navIcon={require('./buttons/back_arrow.png')}
           onIconClicked={navigationOperations.pop}
           style={styles.toolbar}
           titleColor="black"
@@ -62,12 +62,12 @@ var RouteMapper = function(route, navigationOperations, onComponentRef) {
       <View style={{flex: 1}}>
         <ToolbarAndroid
           actions={[]}
-          navIcon={require('../images/chevron-left.png')}
+          navIcon={require('./buttons/back_arrow.png')}
           onIconClicked={navigationOperations.pop}
           style={styles.toolbar}
           titleColor="black"
           title={route.book.volumeInfo.title} />
-        <ProductDetail
+        <BookDetail
           style={{flex: 1}}
           navigator={navigationOperations}
           book={route.book}
